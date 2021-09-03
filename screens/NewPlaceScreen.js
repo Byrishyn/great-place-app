@@ -8,6 +8,7 @@ import ImagePicker from "../components/ImagePicker"
 
 const NewPlaceScreen = props => {
     const [titleValue, setTitleValue] = useState("")
+    const [imageSelected, setImageSelected] = useState()
     const dispatch = useDispatch()
 
     const changeTextHandler = text => {
@@ -15,15 +16,20 @@ const NewPlaceScreen = props => {
     }
 
     const onSaveHandler = () => {
-        dispatch(placesActions.addPlace(titleValue))
+        dispatch(placesActions.addPlace(titleValue, imageSelected))
         props.navigation.goBack()
     }
+    
+    const imageTakenHandler = (imageUri) => {
+        setImageSelected(imageUri)
+    }
+
     return (
         <ScrollView>
             <View style={styles.form}>
                 <Text style={styles.label}>Title</Text>
                 <TextInput style={styles.textInput} onChangeText={changeTextHandler} value={titleValue}/>
-                <ImagePicker />
+                <ImagePicker onImageTaken={imageTakenHandler} />
                 <Button title="Save place" color={Colors.primary} onPress={onSaveHandler} />
             </View>
         </ScrollView>

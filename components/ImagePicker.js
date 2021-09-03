@@ -24,6 +24,7 @@ const ImgPicker = props => {
 
         if (!image.cancelled) {
             setPickedImage(image.uri)
+            props.onImageTaken(image.uri)
         }
     }
 
@@ -43,7 +44,8 @@ const ImgPicker = props => {
 
 const styles = StyleSheet.create({
     imagePicker: {
-        alignItems: "center"
+        alignItems: "center",
+        marginBottom: 15
     },
     imageContainer: {
         width: "100%",
