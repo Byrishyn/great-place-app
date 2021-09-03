@@ -1,11 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
+import { combineReducers, applyMiddleware, createStore } from 'redux';
+import ReduxThunk from "redux-thunk"
+import { Provider } from 'react-redux';
+
 import PlacesNavigator from './navigation/PlacesNavigator';
+import placeReducer from './store/place-reducer';
+
+const rootReducer = combineReducers({
+  places: placeReducer
+})
+
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk))
 
 export default function App() {
   return (
-    <PlacesNavigator/>
+    <Provider store={store}>
+      <PlacesNavigator />
+    </Provider>
   );
 }
 
