@@ -6,6 +6,13 @@ import { Provider } from 'react-redux';
 
 import PlacesNavigator from './navigation/PlacesNavigator';
 import placeReducer from './store/place-reducer';
+import { init } from './helpers/db';
+
+init().then(() => {
+  console.log("Db initialized")
+}).catch((err) => {
+  console.log(err)
+})
 
 const rootReducer = combineReducers({
   places: placeReducer
