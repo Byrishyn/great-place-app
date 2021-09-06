@@ -40,7 +40,7 @@ export const fetchPlaces = () => {
     const promise = new Promise((resolve, reject) => {
         db.transaction((tx) => {
             tx.executeSql(
-                "FETCH * FROM places",
+                "SELECT * FROM places",
                 [],
                 (_, result) => {
                     resolve(result)
