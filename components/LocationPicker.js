@@ -24,7 +24,7 @@ const LocationPicker = props => {
             const location = await Location.getCurrentPositionAsync({})
             setPickedLocation({
                 lat: location.coords.latitude,
-                lng: location.coords.latitude
+                lng: location.coords.longitude
             })
         } catch (err) {
             Alert.alert(
