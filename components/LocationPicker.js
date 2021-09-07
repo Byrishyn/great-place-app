@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { View, Button, ActivityIndicator, Text, Alert, StyleSheet } from "react-native"
 import * as Location from "expo-location"
 
@@ -9,6 +9,15 @@ import MapPreview from "./MapPreview"
 const LocationPicker = props => {
     const [pickedLocation, setPickedLocation] = useState()
     const [isFetching, setIsFetching] = useState(false)
+
+    const mapPickedLocation = props.navigation.getParam("pickedLocation")
+
+    useEffect(() => {
+        if (mapPickedLocation) {
+            setPickedLocation(mapPickedLocation)
+        }
+    }, [mapPickedLocation])
+
     const getLocationHandler = async () => {
         const result = await Location.requestForegroundPermissionsAsync()
         if (!result.granted) {
