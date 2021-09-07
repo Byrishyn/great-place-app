@@ -1,6 +1,7 @@
-import React, { useState } from "react"
-import { View, Text, StyleSheet } from "react-native"
+import React, { useState, useCallback, useEffect } from "react"
+import { View, Text, StyleSheet, TouchableOpacity, Platform } from "react-native"
 import MapView, { Marker } from "react-native-maps"
+import Colors from "../constants/Colors"
 
 const MapScreen = props => {
     const [selectedLocation, setSelectedLocation] = useState()
@@ -20,22 +21,54 @@ const MapScreen = props => {
 
     let markerCoordinates;
 
-    if (selectedLocation) { 
+    if (selectedLocation) {
         markerCoordinates = {
             latitude: selectedLocation.lat,
             longitude: selectedLocation.lng
         }
     }
+
+    const savePickedLocationHandler = useCallback(() => {
+        if (!selectedLocation) {
+            return;
+        }
+        props.navigation.navigate("NewPlace", {pickedLocation : selectedLocation})
+    },[selectedLocation])
+
+    useEffect(() => {
+        props.navigation.setParams({saveLocation: savePickedLocationHandler})
+    }, [savePickedLocationHandler])
+
     return (
         <MapView region={mapRegion} style={styles.map} onPress={selectLocationHandler}>
-            {markerCoordinates && <Marker title="Picked Location" coordinate={markerCoordinates}/>}
+            {markerCoordinates && <Marker title="Picked Location" coordinate={markerCoordinates} />}
         </MapView>
     )
+}
+
+MapScreen.navigationOptions = navData => {
+    const save = navData.navigation.getParam("saveLocation")
+    return {
+        headerTitle: "Map",
+        headerRight: (
+            <TouchableOpacity style={styles.headerButton} onPress={save}>
+                <Text style={styles.headerButtonText}>Save</Text>
+            </TouchableOpacity>
+        )
+    }
 }
 
 const styles = StyleSheet.create({
     map: {
         flex: 1
+    },
+    headerButton : {
+        marginHorizontal: 20,
+
+    },
+    headerButtonText: {
+        fontSize: 16,
+        color: Platform.OS === "android" ? "white" : Colors.primary
     }
 })
 
